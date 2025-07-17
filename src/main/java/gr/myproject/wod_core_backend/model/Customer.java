@@ -16,7 +16,6 @@ public class Customer extends AbstractEntity {
 
 
 
-    private String uuid;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -24,8 +23,10 @@ public class Customer extends AbstractEntity {
     @Column(name = "is_subscribed")
     private Boolean isSubscribed;
 
-    public void initializeUUID() {
-        if (uuid == null) uuid = UUID.randomUUID().toString();
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
 
 }

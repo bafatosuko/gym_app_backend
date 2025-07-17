@@ -27,4 +27,6 @@ public class Booking extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "workout_session_id")
     private WorkoutSession workoutSession;
+
+
 }

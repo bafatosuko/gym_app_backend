@@ -16,6 +16,9 @@ public class Trainer extends AbstractEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }
