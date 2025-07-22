@@ -13,6 +13,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -92,6 +96,13 @@ public class CustomerService {
     public Optional<CustomerReadOnlyDTO> findByUsername(String username) {
         return customerRepository.findByUserUsername(username)
                 .map(mapper::mapToCustomerReadOnlyDTO);
+    }
+
+    @Transactional
+    public Page<CustomerReadOnlyDTO> getPaginatedSortedCustomers(int page, int size, String sortBy, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return customerRepository.findAll(pageable).map(mapper::mapToCustomerReadOnlyDTO);
     }
 
 }
