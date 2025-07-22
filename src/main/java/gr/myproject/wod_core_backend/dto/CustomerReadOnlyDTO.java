@@ -13,6 +13,7 @@ import lombok.Setter;
 public class CustomerReadOnlyDTO {
 
     private Long id;
+    private String uuid;
     private Boolean isActive;
     private Boolean isSubscribed;
     private UserReadOnlyDTO user;

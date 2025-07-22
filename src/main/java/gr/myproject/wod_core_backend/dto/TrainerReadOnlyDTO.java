@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 public class TrainerReadOnlyDTO {
     private Long id;
+    private String uuid;
     private UserReadOnlyDTO user;
 
 }
