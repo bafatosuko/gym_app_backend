@@ -14,12 +14,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Getter
 @Setter
 @Table(name = "users")
@@ -43,26 +45,21 @@ public class User extends AbstractEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
+
+    //
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("'CUSTOMER'")
     private Role role;
 
     @ColumnDefault("true")
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @OneToOne(mappedBy = "user")
-    private Trainer trainer;
 
-    @OneToOne(mappedBy = "user")
-    private Customer customer;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions = new ArrayList<>();
 
-    public boolean isTrainer (){
-        return getTrainer() != null;
-    }
 
-    public boolean isCustomer () {
-        return getCustomer() != null;
-    }
 
 
 

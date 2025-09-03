@@ -33,13 +33,13 @@ public class AbstractEntity {
     private LocalDateTime updatedAt;
 
 
-    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
-    private String uuid;
-
-    @PrePersist
-    public void generateUUID() {
-        if (uuid == null || uuid.isBlank()) {
-            uuid = UUID.randomUUID().toString();
-        }
-    }
+//    @Column( unique = true, nullable = false, updatable = false)
+//    private String uuid;
+//
+//    @PrePersist
+//    public void generateUUID() {
+//        if (uuid == null || uuid.isBlank()) {
+//            uuid = UUID.randomUUID().toString();
+//        }
+//    }
 }

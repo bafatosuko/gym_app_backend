@@ -19,9 +19,14 @@ public class WorkoutSessionReadOnlyDTO {
     private String title;
     private String description;
     private LocalDate sessionDate;
-    private LocalTime startTime;
+
+    // Στέλνω string για να μπορω να το διαχειριστω καλύτερα στο front end
+   // private LocalTime startTime;
+    private String startTime;
     private Integer capacity;
     private int availableSlots;
     private boolean isPast;
-    private TrainerReadOnlyDTO trainer;
+    private UserReadOnlyDTO trainer;
+
+
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -24,4 +24,5 @@ public class UserReadOnlyDTO {
     private LocalDate dateOfBirth;
     private GenderType gender;
     private Role role;
+    private List<SubscriptionReadOnlyDTO> subscriptions;
 }

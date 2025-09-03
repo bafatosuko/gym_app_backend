@@ -18,11 +18,13 @@ public class Booking extends AbstractEntity {
     private LocalDateTime bookingTime;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User user; // Ο πελάτης που κάνει την κράτηση
 
     @Column(name = "is_cancelled")
     private Boolean isCancelled;
+
+    // todo  private id CancelledBy
 
     @ManyToOne
     @JoinColumn(name = "workout_session_id")

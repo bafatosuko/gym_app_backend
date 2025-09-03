@@ -1,6 +1,5 @@
 package gr.myproject.wod_core_backend.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CustomerReadOnlyDTO {
+public class WorkoutSessionCalendarDTO extends WorkoutSessionReadOnlyDTO {
 
-    private Long id;
-    private String uuid;
-    private Boolean isActive;
-    private Boolean isSubscribed;
-    private UserReadOnlyDTO user;
+    private Long bookingId;
+    private boolean isDisabled;
 }

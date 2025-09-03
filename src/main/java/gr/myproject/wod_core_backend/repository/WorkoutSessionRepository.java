@@ -1,5 +1,7 @@
 package gr.myproject.wod_core_backend.repository;
 
+import gr.myproject.wod_core_backend.model.Subscription;
+import gr.myproject.wod_core_backend.model.User;
 import gr.myproject.wod_core_backend.model.WorkoutSession;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,10 +14,11 @@ import java.util.Optional;
 @Repository
 public interface WorkoutSessionRepository extends JpaRepository<WorkoutSession, Long> , JpaSpecificationExecutor<WorkoutSession> {
 
-    List<WorkoutSession> findAllByTrainerId(Long trainerId);
+    List<WorkoutSession> findByTrainer_Id(Long trainerId);
 
-    List<WorkoutSession> findAllBySessionDate(LocalDate sessionDate);
+    List<WorkoutSession> findBySessionDateOrderByStartTimeAsc(LocalDate sessionDate);
 
-    Optional<WorkoutSession> findById(Long id);
+    List<WorkoutSession> findBySessionDate(LocalDate date);
 
+    List<WorkoutSession> findAllByTrainer(User user);
 }

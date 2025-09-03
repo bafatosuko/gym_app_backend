@@ -17,6 +17,6 @@ public class BookingReadOnlyDTO {
     private Long id;
     private LocalDateTime bookingTime;
     private Boolean isCancelled;
-    private CustomerReadOnlyDTO customer;
+    private UserReadOnlyDTO customer;
     private WorkoutSessionReadOnlyDTO workoutSession;
 }

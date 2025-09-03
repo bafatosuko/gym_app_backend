@@ -6,9 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -36,7 +34,7 @@ public class WorkoutSession extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")
-    private Trainer trainer;
+    private User trainer;
 
     @OneToMany(mappedBy = "workoutSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Booking> bookings = new HashSet<>();
@@ -44,12 +42,15 @@ public class WorkoutSession extends AbstractEntity {
     public void addBooking(Booking booking) {
         if (bookings == null) bookings = new HashSet<>();
         bookings.add(booking);
+        booking.setWorkoutSession(this);
     }
 
+
+
     // Επιστρέφει true αν ο συγκεκριμένος πελάτης έχει κάνει ενεργή κράτηση σε αυτό το session
-    public boolean hasCustomerBooked(Customer customer) {
+    public boolean hasCustomerBooked(User customer) {
         return bookings.stream()
-                .anyMatch(b -> !b.getIsCancelled() && b.getCustomer().getId().equals(customer.getId()));
+                .anyMatch(b -> !b.getIsCancelled() && b.getUser().getId().equals(customer.getId()));
     }
 
     // Επιστρέφει τις διαθέσιμες θέσεις (χωρητικότητα - κρατήσεις που δεν έχουν ακυρωθεί)
@@ -57,7 +58,7 @@ public class WorkoutSession extends AbstractEntity {
         long activeBookings = bookings.stream()
                 .filter(b -> !b.getIsCancelled())
                 .count();
-        return capacity - (int) activeBookings;
+        return Math.max(0, (capacity != null ? capacity : 0) - (int) activeBookings);
     }
 
     // Επιστρέφει true αν το session έχει ήδη περάσει (ημερομηνία + ώρα)
@@ -66,5 +67,15 @@ public class WorkoutSession extends AbstractEntity {
         return sessionDateTime.isBefore(LocalDateTime.now());
     }
 
+
+    public WorkoutSession(String title, String description, LocalTime startTime,
+                          Integer capacity, LocalDate sessionDate, User trainer) {
+        this.title = title;
+        this.description = description;
+        this.startTime = startTime;
+        this.capacity = capacity;
+        this.sessionDate = sessionDate;
+        this.trainer = trainer;
+    }
 
 }

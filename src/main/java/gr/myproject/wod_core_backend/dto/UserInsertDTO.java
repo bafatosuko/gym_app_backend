@@ -42,8 +42,10 @@ public class UserInsertDTO {
     @NotNull(message = "Gender is required")
     private GenderType gender;
 
-    @NotNull(message = "Role is required")
-    private Role role;
+
+    //
+//    @NotNull(message = "Role is required")
+//    private Role role;
 }
 
 
