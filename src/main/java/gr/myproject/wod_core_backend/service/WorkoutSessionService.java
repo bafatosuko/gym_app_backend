@@ -4,6 +4,7 @@ import gr.myproject.wod_core_backend.core.enums.Role;
 import gr.myproject.wod_core_backend.core.exceptions.AppObjectInvalidArgumentException;
 import gr.myproject.wod_core_backend.core.exceptions.AppObjectNotFoundException;
 import gr.myproject.wod_core_backend.dto.WorkoutSessionCalendarDTO;
+import gr.myproject.wod_core_backend.dto.WorkoutSessionInsertDTO;
 import gr.myproject.wod_core_backend.dto.WorkoutSessionReadOnlyDTO;
 import gr.myproject.wod_core_backend.mapper.WorkoutSessionMapper;
 import gr.myproject.wod_core_backend.model.Booking;
@@ -30,7 +31,7 @@ public class WorkoutSessionService {
     private final UserRepository userRepository;
 
     @Transactional
-    public WorkoutSession createSession(WorkoutSession session, Long userId)
+    public WorkoutSession createSession(WorkoutSessionInsertDTO dto, Long userId)
     throws AppObjectNotFoundException, AppObjectInvalidArgumentException{
 
         User trainer = userRepository.findById(userId)
@@ -39,14 +40,16 @@ public class WorkoutSessionService {
         if(trainer.getRole() == Role.CUSTOMER)
             throw new AppObjectInvalidArgumentException("Customer", "You  don't have Permission tou do that as a Customer");
 
-        session.setTrainer(trainer);
+        WorkoutSession session = workoutSessionMapper.mapToWorkoutSessionEntity(dto, trainer);
+
+       // session.setTrainer(trainer);
 
 
         return workoutSessionRepository.save(session);
     }
 
     @Transactional
-    public WorkoutSession updateSession(Long sessionId, WorkoutSession updatedSession, Long trainerId)
+    public WorkoutSession updateSession(Long sessionId, WorkoutSessionInsertDTO updatedSession, Long trainerId)
             throws AppObjectNotFoundException , AppObjectInvalidArgumentException{
 
         WorkoutSession existing = workoutSessionRepository.findById(sessionId)

@@ -47,7 +47,7 @@ public class UserRestController {
     @PostMapping("/save")
     public ResponseEntity<UserReadOnlyDTO> createUser(
             @Valid @RequestBody UserInsertDTO userInsertDTO
-    ) throws AppObjectAlreadyExists, AppObjectInvalidArgumentException, IOException {
+    ) throws AppObjectAlreadyExists, AppObjectInvalidArgumentException {
         UserReadOnlyDTO createdUser = userService.saveUser(userInsertDTO);
         return ResponseEntity.ok(createdUser);
     }

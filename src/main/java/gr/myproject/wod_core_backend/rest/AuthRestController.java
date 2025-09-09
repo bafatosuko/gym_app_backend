@@ -4,6 +4,11 @@ import gr.myproject.wod_core_backend.authentication.AuthenticationService;
 import gr.myproject.wod_core_backend.core.exceptions.AppObjectNotAuthorizedException;
 import gr.myproject.wod_core_backend.dto.AuthenticationRequestDTO;
 import gr.myproject.wod_core_backend.dto.AuthenticationResponseDTO;
+import gr.myproject.wod_core_backend.dto.UserReadOnlyDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +29,15 @@ public class AuthRestController {
     //private final IUserService userService;
     private final AuthenticationService authenticationService;
 
+
+    @Operation(
+            summary = "Login",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "You logged in successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthenticationResponseDTO.class))),
+                    @ApiResponse(responseCode = "400", description = "Invalid input")
+            }
+    )
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO)
             throws AppObjectNotAuthorizedException {

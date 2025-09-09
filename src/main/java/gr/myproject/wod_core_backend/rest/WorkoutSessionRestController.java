@@ -4,6 +4,7 @@ import gr.myproject.wod_core_backend.core.enums.Role;
 import gr.myproject.wod_core_backend.core.exceptions.AppObjectInvalidArgumentException;
 import gr.myproject.wod_core_backend.core.exceptions.AppObjectNotFoundException;
 import gr.myproject.wod_core_backend.dto.WorkoutSessionCalendarDTO;
+import gr.myproject.wod_core_backend.dto.WorkoutSessionInsertDTO;
 import gr.myproject.wod_core_backend.dto.WorkoutSessionReadOnlyDTO;
 import gr.myproject.wod_core_backend.mapper.WorkoutSessionMapper;
 import gr.myproject.wod_core_backend.model.User;
@@ -34,8 +35,9 @@ public class WorkoutSessionRestController {
 
     @Operation(summary = "Create a new workout session")
     @ApiResponse(responseCode = "200", description = "Workout session created")
+    @ApiResponse(responseCode = "400", description = "Not authorized")
     @PostMapping
-    public ResponseEntity<WorkoutSessionReadOnlyDTO> create(@RequestBody WorkoutSession session, Authentication auth)
+    public ResponseEntity<WorkoutSessionReadOnlyDTO> create(@RequestBody WorkoutSessionInsertDTO session, Authentication auth)
     throws AppObjectNotFoundException, AppObjectInvalidArgumentException{
         User user = (User) auth.getPrincipal();
         WorkoutSession created = workoutSessionService.createSession(session, user.getId());
@@ -48,7 +50,7 @@ public class WorkoutSessionRestController {
     @PutMapping("/{id}")
     public ResponseEntity<WorkoutSessionReadOnlyDTO> update(
             @PathVariable Long id,
-            @RequestBody WorkoutSession session,
+            @RequestBody WorkoutSessionInsertDTO session,
             Authentication authentication
     ) throws AppObjectNotFoundException , AppObjectInvalidArgumentException{
         User trainer = (User) authentication.getPrincipal();
@@ -71,9 +73,12 @@ public class WorkoutSessionRestController {
     @Operation(summary = "Get a workout session by ID")
     @ApiResponse(responseCode = "200", description = "Workout session found")
     @GetMapping("/{id}")
-    public ResponseEntity<WorkoutSession> getById(@PathVariable Long id)
+    public ResponseEntity<WorkoutSessionReadOnlyDTO> getById(@PathVariable Long id)
     throws AppObjectNotFoundException{
-        return ResponseEntity.ok(workoutSessionService.getSession(id));
+        WorkoutSession session = workoutSessionService.getSession(id);
+
+        WorkoutSessionReadOnlyDTO dto = workoutSessionMapper.mapToWorkoutSessionReadOnlyDTO(session);
+        return ResponseEntity.ok(dto);
     }
 
     @Operation(summary = "Get all workout sessions")
