@@ -81,11 +81,14 @@ public class UserService {
 
 
     @Transactional
-    public void deleteUserById(Long id) throws AppObjectNotFoundException , AppObjectInvalidArgumentException{
+    public void deleteUserById(Long id, User userWhoDeletes) throws AppObjectNotFoundException , AppObjectInvalidArgumentException{
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppObjectNotFoundException("User", "User with id " + id + " not found"));
 
         if (user.getRole() == Role.ADMIN ) throw new AppObjectInvalidArgumentException("Admin", "You cant delete ADMIN");
+
+
+        if (userWhoDeletes.getId().equals(id)) throw  new AppObjectInvalidArgumentException("User", "You cant delete your self");
 
         // οταν σβηνει ενα trainer θα σβηνει και τα workoutSession του
         if (user.getRole() == Role.TRAINER) {

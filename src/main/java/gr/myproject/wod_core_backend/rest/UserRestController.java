@@ -5,6 +5,7 @@ import gr.myproject.wod_core_backend.core.exceptions.*;
 import gr.myproject.wod_core_backend.dto.UserInsertDTO;
 import gr.myproject.wod_core_backend.dto.UserReadOnlyDTO;
 
+import gr.myproject.wod_core_backend.model.User;
 import gr.myproject.wod_core_backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -70,15 +72,51 @@ public class UserRestController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @Operation(summary = "Delete user by id")
+    @Operation(summary = "Delete user by id",
+            description = "Διαγράφει έναν χρήστη με βάση το id. Αν ο χρήστης είναι TRAINER διαγράφονται και τα sessions του.",
+
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "User deleted successfully"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid operation "
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found"
+                    )
+            }
+
+    )
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/trainer/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws AppObjectNotFoundException, AppObjectInvalidArgumentException {
-        userService.deleteUserById(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, Authentication auth) throws AppObjectNotFoundException, AppObjectInvalidArgumentException {
+
+        User user = (User) auth.getPrincipal();
+
+        userService.deleteUserById(id, user);
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Get users by role")
+    @Operation(summary = "Get users by role",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "CUSTOMER promoted to TRAINER"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid operation"
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found"
+                    )
+            }
+        )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/trainer/role/{role}")
     public ResponseEntity<List<UserReadOnlyDTO>> getUsersByRole(@PathVariable Role role) {
@@ -86,7 +124,22 @@ public class UserRestController {
     }
 
     // Για το swap απο Customer σε Trainer !!
-    @Operation(summary = "Promote a Customer to Trainer(only Trainers and Admin)")
+    @Operation(summary = "Promote a Customer to Trainer(only Trainers and Admin)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "CUSTOMER promoted to TRAINER"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid operation"
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found"
+                    )
+            }
+    )
     @PutMapping("/trainer/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'TRAINER')")
     @SecurityRequirement(name = "bearerAuth")
