@@ -26,7 +26,7 @@ public class AuthRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthRestController.class);
 
-    //private final IUserService userService;
+
     private final AuthenticationService authenticationService;
 
 

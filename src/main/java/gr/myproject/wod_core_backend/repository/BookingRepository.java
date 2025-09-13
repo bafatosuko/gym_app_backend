@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> , JpaSpecificationExecutor<Booking> {
 
-    List<Booking> findByUser(User user);
+
 
     List<Booking> findByWorkoutSession(WorkoutSession workoutSession);
 
@@ -28,7 +28,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> , JpaSpe
 
     void deleteAllByUser(User user);
 
-    void deleteAllByWorkoutSessionId(Long sessionId);
+
 
     void deleteAllByWorkoutSession(WorkoutSession session);
 }

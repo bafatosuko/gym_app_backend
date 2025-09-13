@@ -40,7 +40,7 @@ public class UserService {
     private final WorkoutSessionRepository workoutSessionRepository;
 
 
-    // -------------------- CREATE --------------------
+    // --- CREATE ---
     @Transactional(rollbackOn = {AppObjectAlreadyExists.class, AppObjectInvalidArgumentException.class})
     public UserReadOnlyDTO saveUser(UserInsertDTO dto)
             throws AppObjectAlreadyExists, AppObjectInvalidArgumentException {
@@ -64,7 +64,7 @@ public class UserService {
         }
     }
 
-    // -------------------- READ ALL --------------------
+    // --- READ ALL USERS ---
     public List<UserReadOnlyDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream()

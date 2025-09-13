@@ -28,7 +28,7 @@ import java.util.Optional;
 @Service
 public class SubscriptionService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionService.class);
+
 
     private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
@@ -77,7 +77,7 @@ public class SubscriptionService {
         return mapper.mapToSubscriptionReadOnlyDTO(saved);
     }
 
-    // ---- Προβολή όλων των συνδρομών του χρήστη ----
+    // --- Προβολή όλων των συνδρομών του χρήστη ----
     public List<SubscriptionReadOnlyDTO> getAllSubscriptions(String username) {
         return subscriptionRepository.findAllByUserUsernameOrderByStartDateDesc(username)
                 .stream()

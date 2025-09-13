@@ -14,11 +14,11 @@ import java.util.Optional;
 @Repository
 public interface WorkoutSessionRepository extends JpaRepository<WorkoutSession, Long> , JpaSpecificationExecutor<WorkoutSession> {
 
-    List<WorkoutSession> findByTrainer_Id(Long trainerId);
+
 
     List<WorkoutSession> findBySessionDateOrderByStartTimeAsc(LocalDate sessionDate);
 
-    List<WorkoutSession> findBySessionDate(LocalDate date);
+
 
     List<WorkoutSession> findAllByTrainer(User user);
 }

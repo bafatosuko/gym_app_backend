@@ -61,3 +61,14 @@
  - MYSQL_PASSWORD=12345
  - RUN SERVER `./gradlew bootRun`
  - SWAGGER http://localhost:8080/swagger-ui.html
+
+## Test Users !!
+### ADMIN 
+- username: admin@admin.gr 
+- password: !Test123
+
+### Trainer
+
+- username: trainer@trainer.gr
+- password: !Test123
+
